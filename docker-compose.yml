@@ -10,7 +10,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
-    image: docker.io/bitnami/kafka:3
+    image: docker.io/bitnami/kafka:2
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -25,6 +25,13 @@ services:
       - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
     depends_on:
       - zookeeper
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+
 
 volumes:
   zookeeper_data:
