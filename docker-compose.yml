@@ -9,6 +9,8 @@ services:
       - "zookeeper_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - overlay
   kafka:
     image: docker.io/bitnami/kafka:2
     ports:
@@ -25,16 +27,24 @@ services:
       - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
     depends_on:
       - zookeeper
+    networks:
+      - overlay
 
   clickhouse:
     image: yandex/clickhouse-server:latest
     ports:
       - "9000:9000"
       - "8123:8123"
-
+    depends_on:
+      - kafka
+    networks:
+      - overlay
 
 volumes:
   zookeeper_data:
     driver: local
   kafka_data:
     driver: local
+
+networks:
+  overlay:
